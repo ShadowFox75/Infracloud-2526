@@ -21,7 +21,7 @@
        - RESTART APACHE2
 
     - name: HOME PAGE
-      copy:
+      template:
         src: /home/devasc/labs/tasks/ansible/index.html
         dest: /var/www/html/index.html
       notify:
