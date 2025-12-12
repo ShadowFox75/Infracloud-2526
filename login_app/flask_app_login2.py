@@ -70,22 +70,26 @@ def login_v1():
     return error
 
 #### PASSWORD HASHING => signup, verify, login
-@microweb_app.route('/signup/v2', methods=['POST'])
+@microweb_app.route('/signup/v2', methods=['GET', 'POST'])
 def signup_v2():
+    if request.method == 'GET':
+        return render_template("login.html")
+
     db_conn = sqlite3.connect(db_name)
     c = db_conn.cursor()
-    sql_statement = "CREATE TABLE IF NOT EXISTS USER_HASH (USERNAME TEXT PRIMARY KEY NOT NULL, HASH TEXT NOT NULL); "
-    c.execute(sql_statement)
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS USER_PLAIN (USERNAME TEXT PRIMARY KEY NOT NULL, PASSWORD TEXT NOT NULL); """)
     db_conn.commit()
+
     try:
-        hash_value = hashlib.sha256(request.form['password'].encode()).hexdigest()
-        sql_statement = "INSERT INTO USER_HASH VALUES ('{0}' , '{1}' ) ".format(request.form['username'], hash_value)
-        c.execute(sql_statement)
+        c.execute("INSERT INTO USER_PLAIN (USERNAME, PASSWORD) VALUES (? , ?)",
+        (request.form['username'] , request.form['password'])
+
+        )
         db_conn.commit()
     except sqlite3.IntegrityError:
+        db_conn.close()
         return "Username has been registered\n"
-    print('username: ' , request.form['username'], ' password: ', request.form['password'], ' hash: ', hash_value)
-    return "Secure signup succeeded\n"
 
 def verify_hash(username, password):
     db_conn = sqlite3.connect(db_name)
