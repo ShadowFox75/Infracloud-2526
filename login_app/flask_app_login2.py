@@ -6,7 +6,7 @@ import hashlib
 
 microweb_app = Flask(__name__)
 
-db_name = 'user.db'
+db_name = 'login.db'
 
 #### RE-INTIALIZING DATABASE => deleting all records from test database
 @microweb_app.route('/delete/all', methods=['POST', 'DELETE'])
@@ -22,20 +22,29 @@ def delete_all():
     return "Test records deleted\n"
 
 #### CLEAR TEXT PASSWORDS, INSECURE => signup, verify, login
-@microweb_app.route('/signup/v1', methods=['POST'])
+@microweb_app.route('/signup/v1', methods=['GET', 'POST'])
 def signup_v1():
+    if request.method == 'GET':
+        return render_template("login.html")
+
     db_conn = sqlite3.connect(db_name)
     c = db_conn.cursor()
-    sql_statement = "CREATE TABLE IF NOT EXISTS USER_PLAIN (USERNAME TEXT PRIMARY KEY NOT NULL, PASSWORD TEXT NOT NULL); "
-    c.execute(sql_statement)
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS USER_PLAIN (USERNAME TEXT PRIMARY KEY NOT NULL, PASSWORD TEXT NOT NULL); """)
     db_conn.commit()
+
     try:
-        sql_statement = "INSERT INTO USER_PLAIN (USERNAME, PASSWORD) VALUES ('{0}' , '{1}')".format(request.form['username'] , request.form['password'])
-        c.execute(sql_statement)
+        c.execute("INSERT INTO USER_PLAIN (USERNAME, PASSWORD) VALUES (? , ?)",
+        (request.form['username'] , request.form['password'])
+
+        )
         db_conn.commit()
     except sqlite3.IntegrityError:
-        return "Username has been registered, but is insecure\n"
-    return "Signup success, but insecure\n"
+        db_conn.close()
+        return "Username has been registered\n"
+
+        db_conn.close()
+    return "Signup success\n"
 
 def verify_plain(username, password):
     db_conn = sqlite3.connect(db_name)
