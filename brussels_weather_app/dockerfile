@@ -1,2 +1,0 @@
-FROM python:latest
-RUN pip install --no cache dir --progress-bar off weather
