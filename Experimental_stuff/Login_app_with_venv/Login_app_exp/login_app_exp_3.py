@@ -74,7 +74,7 @@ def login_v1():
 @microweb_app.route('/signup/v2', methods=['GET', 'POST'])
 def signup_v2():
     if request.method == 'GET':
-        return render_template("signup.html")
+        return render_template("signup_V2.html")
     
     db_conn = sqlite3.connect(db_name)
     c = db_conn.cursor()
@@ -113,7 +113,7 @@ def verify_hash(username, password):
 @microweb_app.route('/login/v2', methods=['GET', 'POST'])
 def login_v2():
     if request.method == 'GET':
-        return render_template("login.html")
+        return render_template("login_V2.html")
     
     if request.method == 'POST':
         if verify_hash(request.form['username'], request.form['password']):
