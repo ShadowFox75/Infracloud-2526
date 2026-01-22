@@ -35,7 +35,7 @@ def addBook(book, apiKey):
 
 # Get the Auth Token Key
 # apiKey = getAuthToken()
-apiKey = "cisco|P6Ur-XNPEjNhiYe2xwtZysZT7T_AlBNiLUFfEq1dLtw"
+apiKey = "cisco|orlanqAUbbCNrlFzfSujm5BDdOeAs6M5h-EJ4FcKhg8"
 
 # Using the faker module, generate random "fake" books
 fake = Faker()
