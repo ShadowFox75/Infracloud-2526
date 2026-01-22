@@ -1,6 +1,6 @@
 ---
     - name: Gather information about IP interfaces
-      hosts: csr
+      hosts: CSR1kv
       gather_facts: no
       connection: network_cli 
       tasks:
