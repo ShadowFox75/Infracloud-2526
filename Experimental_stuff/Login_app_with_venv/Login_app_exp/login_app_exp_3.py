@@ -3,6 +3,7 @@ from flask import request
 from flask import render_template
 import sqlite3
 import hashlib
+import datetime
 
 microweb_app = Flask(__name__)
 db_name = 'test.db'
@@ -124,7 +125,8 @@ def login_v2():
 #### HOME
 @microweb_app.route('/')
 def main():
-    return render_template("index.html")
+    datetime_now = datetime.datetime.now()
+    return render_template("index.html",datetime_now=datetime_now)
 
 #### MAIN
 if __name__ == "__main__":

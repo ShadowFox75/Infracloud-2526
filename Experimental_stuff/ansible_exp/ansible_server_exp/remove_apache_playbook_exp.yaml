@@ -1,0 +1,21 @@
+---
+  - hosts: webservers
+    gather_facts: true
+    become: true
+    tasks: 
+      - name: Stop Apache2
+        service:
+          name: apache2
+          state: stopped
+      
+      - name: Remove Apache2
+        apt:
+          name: apache2
+          state: absent
+          purge: yes
+      
+      - name: Remove Apache2 dependencies
+        apt:
+          autoremove: yes
+
+        
