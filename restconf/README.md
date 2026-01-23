@@ -1,0 +1,2 @@
+- Restconf get interface
+- Restconf get platform

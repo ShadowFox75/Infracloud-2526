@@ -1,0 +1,2 @@
+- netmiko show version
+- netmiko inventaris

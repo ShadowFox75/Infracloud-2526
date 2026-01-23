@@ -1,0 +1,3 @@
+- Brussels weather app met venv
+- flask app test versie
+- login app met venv en Docker
